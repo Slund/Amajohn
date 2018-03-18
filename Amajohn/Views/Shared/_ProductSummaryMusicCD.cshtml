@@ -1,0 +1,38 @@
+﻿@using Amajohn.Models;
+@model Amajohn.Models.MusicCD
+
+<div class="row"> 
+    <div class="col-md-2"> 
+        <img src="/Content/Images/@Model.ImageUrl" alt="@Model.Title" style="width:100px" /> 
+    </div> 
+
+    <div class="col-md-6"> 
+        <strong>Artist:</strong> @Model.Artist<br /> 
+        <strong>Title:</strong> @Model.Title<br /> 
+        <strong>Price:</strong> @Model.Price<br /> 
+        <strong>Publisher:</strong> @Model.Label (@Model.Released)<br /> 
+    </div> 
+
+    <div class="col-md-4">
+        @using (Html.BeginForm("AddToCart", "Cart"))
+        {
+            @Html.DropDownList("quantity", Enumerable.Range(1, 10).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "" })
+            @Html.HiddenFor(m => m.ProductId) 
+            @Html.Hidden("returnUrl", Request.Url.PathAndQuery)
+            <input type="submit" class="btn btn-success" value="Add to cart" />
+        } 
+    </div> 
+</div> 
+
+<div class="row">
+    <div class="col-md-12">
+        <h4>Tracks:</h4>
+        <ol>
+            @foreach (Track track in @Model.Tracks) {
+                <li>@track.Title (@track.Composer)
+                    @track.Length.Minutes:@track.Length.Seconds</li>
+            }
+        </ol>
+       <b>Total playing time: @Model.GetPlayingTime()</b>
+	</div>
+</div>

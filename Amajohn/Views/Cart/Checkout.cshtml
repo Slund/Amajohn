@@ -1,0 +1,35 @@
+﻿@model Amajohn.ViewModels.ShippingDetails
+
+@{
+    ViewBag.Title = "Amajohn: Checkout";
+}
+
+<h2>Check out now</h2>
+<p>Please enter your details, and we'll ship your goods right away!</p>
+@Html.ValidationSummary()
+@using (Html.BeginForm())
+{
+    <h3>Ship to</h3>
+
+    foreach (var property in ViewData.ModelMetadata.Properties)
+    {
+        if (property.PropertyName != "GiftWrap")
+        {
+        <div class="form-group">
+            @Html.Label(property.DisplayName ?? property.PropertyName)
+	        @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+        </div>
+        }
+    }
+
+    <h3>Options</h3>
+    <div class="checkbox">
+        <label>
+            @Html.EditorFor(x => x.GiftWrap)
+            Gift wrap these items
+       </label>
+    </div>
+    <div class="text-center">
+        <input class="btn btn-primary" type="submit" value="Complete order" />
+    </div>
+ }

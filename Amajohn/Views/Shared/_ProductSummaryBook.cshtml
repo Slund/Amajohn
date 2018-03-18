@@ -1,0 +1,25 @@
+﻿@model Amajohn.Models.Book
+
+<div class="row"> 
+    <div class="col-md-2"> 
+        <img src="/Content/Images/@Model.ImageUrl" alt="@Model.Title" style="width:100px" /> 
+    </div> 
+
+    <div class="col-md-6"> 
+        <strong>Title:</strong> @Model.Title<br /> 
+        <strong>Author:</strong> @Model.Author<br /> 
+        <strong>Price:</strong> @Model.Price<br /> 
+        <strong>Publisher:</strong> @Model.Publisher (@Model.Published)<br /> 
+        <strong>ISBN:</strong> @Model.ISBN<br /> <br /> 
+    </div> 
+
+    <div class="col-md-4">
+        @using (Html.BeginForm("AddToCart", "Cart")) {
+            @Html.DropDownList("quantity", Enumerable.Range(1, 10).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "" })
+            @Html.Hidden("ProductId", Model.ProductId) 
+            @Html.Hidden("returnUrl", Request.Url.PathAndQuery)
+            <input type="submit" class="btn btn-success" value="Add to cart" />
+        } 
+    </div> 
+
+</div> 

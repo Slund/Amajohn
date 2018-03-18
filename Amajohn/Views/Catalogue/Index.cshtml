@@ -1,0 +1,47 @@
+﻿@using Amajohn.Models;
+
+@model Amajohn.ViewModels.ProductsListViewModel
+
+@{
+    ViewBag.Title = "Catalog";
+}
+
+<div class="row">
+    <div class="col-md-3">
+		@using (Html.BeginForm("Index", "Cart")) {
+            @Html.Hidden("returnUrl", Request.Url.PathAndQuery)
+			<input type="submit" class="btn btn-success" value="View Cart" />
+		}
+    </div>
+</div>
+
+@if(Model.Products.OfType<Book>().Count() > 0) {
+    <h3>The Books</h3>
+
+        foreach (Book book in Model.Products.OfType<Book>().ToList()) {
+		    @Html.Partial("_ProductSummaryBook", book);
+			<br />
+		}
+}
+
+@if(Model.Products.OfType<MusicCD>().Count() > 0) {
+    <h3>The Music CDs</h3>
+
+        foreach (MusicCD cd in Model.Products.OfType<MusicCD>().ToList()) {
+	        @Html.Partial("_ProductSummaryMusicCD", cd);
+            <br />
+        }
+}
+
+@if(Model.Products.OfType<Movie>().Count() > 0) {
+<h3>The Movies</h3>
+
+    foreach (Movie movie in Model.Products.OfType<Movie>().ToList()) {
+        @Html.Partial("_ProductSummaryMovie", movie);
+        <br />
+    }
+}
+
+<div>
+    @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x, category = Model.CurrentCategory }))
+</div>

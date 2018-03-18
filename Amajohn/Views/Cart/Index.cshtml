@@ -1,0 +1,59 @@
+﻿@model Amajohn.ViewModels.CartIndexViewModel
+@{
+    ViewBag.Title = "Amajohn: Your Cart";
+}
+
+<body>
+	<div class="row">
+        <div class="col-md-12">
+            <h2>Your cart</h2>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Quantity</th>
+                        <th>Item</th>
+                        <th class="text-right">Price</th>
+        		        <th class="text-right">Subtotal</th>
+                    </tr>
+                </thead>    
+                <tbody>
+                    @foreach (var line in Model.Cart.Lines)
+                    {
+                        <tr>
+                            <td class="text-center">@line.Quantity</td>
+                            <td class="text-left">@line.Product.Title</td>
+            		        <td class="text-right">@line.Product.Price.ToString("n")</td>
+            		        <td class="text-right">
+        			            @((line.Quantity * line.Product.Price).ToString("n"))
+        			        </td>
+					        <td>
+					            @using (Html.BeginForm("RemoveFromCart", "Cart"))
+                                {
+                                    @Html.DropDownList("quantity", Enumerable.Range(1, 10).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "" })
+                                    @Html.Hidden("ProductId", line.Product.ProductId)
+					                @Html.HiddenFor(x => x.ReturnUrl)
+					                <input class="btn btn-sm btn-warning"
+						                    type="submit" value="Remove" />
+                                }
+					        </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-right">Total:</td>
+                        <td class="text-right">
+            		        @Model.Cart.TotalPrice.ToString("n")
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="text-center">
+                @Html.ActionLink("Continue Shopping", "Index", "Catalogue", null, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Checkout now", "Checkout", null, new { @class = "btn btn-primary" })
+            </div>
+        </div>
+	</div>
+</body>
