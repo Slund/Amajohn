@@ -7,12 +7,11 @@ namespace Amajohn.Controllers
 {
     public class CatalogueController : Controller
     {
-        private AmajohnContext db;
+        private AmajohnContext db = new AmajohnContext();
         public int PageSize = 4;
 
         public ActionResult Index(string category, int page = 1)
         {
-            db = new AmajohnContext();
             ProductsListViewModel model = new ProductsListViewModel
             {
                 Products = db.Products
